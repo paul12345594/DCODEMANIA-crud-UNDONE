@@ -1,0 +1,24 @@
+STEPS BEFORE TO START 
+DOWNLOAD THIS DEPENDENCIES
+(1). -git init 
+(2). -npm i express mongoose express-session ejs multer doteny
+(3). -npm i -D nodemon
+
+PACKAGE.JSON
+put in the package.json  -------------   "start": "nodemon app.js"
+
+
+.ENV
+PORT = 5000
+DB_URI = mongodb://localhost:27017/node_crud
+
+//
+
+
+
+
+
+
+
+
+
