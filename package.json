@@ -8,7 +8,6 @@
   },
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
@@ -19,5 +18,7 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.7"
-  }
+  },
+  "keywords": [],
+  "description": ""
 }
