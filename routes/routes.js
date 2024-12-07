@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const User = require ('..models/users');
-const multer = require('multer');
+const User = require ("../models/users");
+const multer = require("multer");
 
 //IMAGE UPLOAD
 var storage = multer.diskStorage({
@@ -16,9 +16,6 @@ var storage = multer.diskStorage({
 var upload = multer({
     storage:storage,
 }).single('image');
-
-
-
 
 //URL
 router.get("/", (req, res) => {
