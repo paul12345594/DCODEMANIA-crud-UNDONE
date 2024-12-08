@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const User = require ("../models/users");
-const multer = require("multer");
+const multer = require("multer");   // For uploading image 
 
 //IMAGE UPLOAD
 var storage = multer.diskStorage({
     destination: function(req, file, cb){           // req, files, cb = arguments 
-        cb(null, './uploads');
-    },
+        cb(null, './uploads');          // HERE WHERE THE IMAGE UPLOADED
+    },      
     filename: function(req, file, cb){
         cb(null, file.fieldname +"_"+ Date.now() +"_"+ file.originalname);
     }
@@ -50,7 +50,7 @@ router.post('/add', upload, async (req, res) => {
 
 //URL
 router.get("/", (req, res) => {
-    res.render("index", { title: "Home Page" })    // CONNECTED TO HTML 
+    res.render("index", { title: "Home Page" })    // CONNECTED TO HTML    // RENDER IN HOME ROUTE
 });
 
 
