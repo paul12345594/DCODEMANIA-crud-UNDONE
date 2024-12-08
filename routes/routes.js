@@ -49,8 +49,19 @@ router.post('/add', upload, async (req, res) => {
 });
 
 //URL
-router.get("/", (req, res) => {
-    res.render("index", { title: "Home Page" })    // CONNECTED TO HTML    // RENDER IN HOME ROUTE
+// Get all users ROUTE
+router.get("/", async (req, res) => {
+    try {
+        // Wait for the result of the query
+        const users = await User.find().exec();  // or just User.find() without exec(), both work
+        res.render("index", {
+            title: "Home Page",  // Title for the page
+            users: users,        // Pass the users data to the view
+        });
+    } catch (err) {
+        // If an error occurs, send a JSON response with the error message
+        res.json({ message: err.message });
+    }
 });
 
 
