@@ -33,8 +33,10 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(express.static("uploads"));
+
 // set templates engine
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
 // route prefix
 app.use("", require("./routes/routes"));
