@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const User = require ("../models/users");
 const multer = require("multer");   // For uploading image 
-
 //IMAGE UPLOAD
 var storage = multer.diskStorage({
     destination: function(req, file, cb){           // req, files, cb = arguments 
