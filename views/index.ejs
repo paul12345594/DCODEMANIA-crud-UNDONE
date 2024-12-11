@@ -11,33 +11,33 @@
         <% } %>
             <div class="table-resposive">
                 <% if (users != '') { %>
-                    <table class="table table-striped text-center">
+                    <table class="table table-striped text-align-center ">
                         <thead>
                             <tr class="table-dark">
-                                <th style="color: #1cff14;">ID</th>
-                                <th style="color: #1cff14;">Image</th>
-                                <th style="color: #1cff14;">Name</th>
-                                <th style="color: #1cff14;">E-Mail</th>
-                                <th style="color: #1cff14;">Phone</th>
-                                <th style="color: #1cff14;">Action</th>
+                                <th class="text-center" style="color: #1cff14;">ID</th>
+                                <th class="text-center" style="color: #1cff14;">Image</th>
+                                <th class="text-center" style="color: #1cff14;">Name</th>
+                                <th class="text-center" style="color: #1cff14;">E-Mail</th>
+                                <th class="text-center" style="color: #1cff14;">Phone</th>
+                                <th class="text-center" style="color: #1cff14;">Action</th>
                             </tr>
                         </thead>
-
+                        
                         <tbody>
                             <% users.forEach((user, index) => { %> <!-- Corrected variable name to 'user' -->
                                 <tr>
-                                    <td><%= index + 1 %></td> <!-- Correctly output 'index' and add 1 for a human-readable number -->
-                                    <td><img src="/uploads/<%= user.photo %>" width="50" class="img-thumbnail"></td><!-- Corrected 'row.image' to 'user.photo' and output it properly -->
-                                    <td><%= user.name %></td> <!-- Corrected 'row.name' to 'user.name' -->
-                                    <td><%= user.email %></td> <!-- Corrected 'row.email' to 'user.email' -->
-                                    <td><%= user.phone %></td> <!-- Corrected 'row.phone' to 'user.phone' -->
-                                    <td>    
+                                    <td class="text-center"><%= index + 1 %></td> <!-- Centered index -->  <!-- Correctly output 'index' and add 1 for a human-readable number -->
+                                    <td class="text-center"><img src="/uploads/<%= user.photo %>" width="50" class="img-thumbnail"></td> <!-- Centered image -->
+                                    <td class="text-center"><%= user.name %></td>
+                                    <td class="text-center"><%= user.email %></td>
+                                    <td class="text-center"><%= user.phone %></td>
+                                    <td class="text-center">    
                                         <a href="/edit/<%= user._id %>" class="text-success"><i class="fas fa-edit fa-lg -mx-1"></i></a> <!-- Edit Pencil Icon -->
-                                        <a href="/delete/<%= user._id %>" class="text-success"><i class="fas fa-trash fa-lg -mx-1"></i></a> <!-- Trash Icon -->
+                                        <a href="/delete/<%= user._id %>" class="text-success"><i class="fas fa-trash fa-lg -mx-1" style="color: red;"></i></a> <!-- Trash Icon -->
                                     </td>
                                 </tr>
                             <% }); %> <!-- Corrected loop closing -->
-                        </tbody>
+                        </tbody>                        
                     </table>
                 <% } else { %>
                     <h1 class="text-center text-secondary mt-5">No users found in the database!</h1>

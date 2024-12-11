@@ -4,7 +4,7 @@ const express = require ('express');
 const mongoose = require ('mongoose');
 const session = require ('express-session');
 const bodyParser = require("body-parser");
-const path = require("path")
+const path = require("path")   // PATH FOR IMAGE 
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -34,7 +34,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));   // IMAGE DIRECTORY 
 
 // set templates engine
 app.set("view engine", "ejs");
