@@ -64,8 +64,28 @@ router.get("/", async (req, res) => {
 });
 
 
-module.exports = router;
+router.get('/edit/:id', async (req, res) => { // Make the route handler async
+    const id = req.params.id;
 
+    try {
+        const user = await User.findById(id); // Use await for asynchronous operation
+        if (!user) {
+            return res.redirect("/"); // If user is not found, redirect
+        }
+        res.render("edit_users", {
+            title: "Edit User",
+            user: user, // Pass the user to the template
+        });
+    } catch (err) {
+        console.error(err); // Log error
+        res.redirect("/"); // Redirect if an error occurs
+    }
+});
+
+
+
+
+module.exports = router;
 
 
 
