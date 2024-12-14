@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const User = require ("../models/users");
 const multer = require("multer");   // For uploading image 
+const fs = require ("fs");
+
+
+
 //IMAGE UPLOAD
 var storage = multer.diskStorage({
     destination: function(req, file, cb){           // req, files, cb = arguments 
@@ -64,6 +68,9 @@ router.get("/", async (req, res) => {
 });
 
 
+
+
+// GET AN USER ROUTE 
 router.get('/edit/:id', async (req, res) => { // Make the route handler async
     const id = req.params.id;
 
@@ -83,6 +90,46 @@ router.get('/edit/:id', async (req, res) => { // Make the route handler async
 });
 
 
+// Update User Route
+router.post('/update/:id', async (req, res) => {
+    let id = req.params.id;
+    let new_image = "";
+
+    if (req.file) {
+        new_image = req.file.filename;
+        try {
+            // Delete the old image
+            fs.unlinkSync("./uploads/" + req.body.old_image);
+        } catch (err) {
+            console.log(err);
+        }
+    } else {
+        new_image = req.body.old_image;
+    }
+
+    try {
+        // Use async/await for findByIdAndUpdate
+        const result = await User.findByIdAndUpdate(id, {
+            name: req.body.name,
+            email: req.body.email,
+            phone: req.body.phone,
+            image: new_image,
+        }, { new: true }); // The `{ new: true }` option returns the updated document
+
+        // Send success message
+        req.session.message = {
+            type: "Success",
+            message: "User updated successfully!"
+        };
+
+        // Redirect to the user's edit page to see the updated data
+        res.redirect(`/edit/${id}`);
+
+    } catch (err) {
+        // If there is an error, handle it
+        res.json({ message: err.message, type: "danger" });
+    }
+});
 
 
 module.exports = router;
