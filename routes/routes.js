@@ -89,47 +89,67 @@ router.get('/edit/:id', async (req, res) => { // Make the route handler async
     }
 });
 
-
 // Update User Route
-router.post('/update/:id', async (req, res) => {
+router.post("/update/:id", upload, async (req, res) => {
     let id = req.params.id;
     let new_image = "";
 
+    // Check if a new image was uploaded
     if (req.file) {
-        new_image = req.file.filename;
+        new_image = req.file.filename;  // Assign the new image filename
+
+        // Check if the old image is passed in the request body
+        const oldImageName = req.body.old_image;
+        console.log("Old image passed: ", oldImageName); // Log the value of old_image
+
+        // Try to delete the old image if it exists
         try {
-            // Delete the old image
-            fs.unlinkSync("./uploads/" + req.body.old_image);
+            if (oldImageName) {
+                const oldImagePath = "./uploads/" + oldImageName;
+                console.log('Attempting to delete old image:', oldImagePath);  // Log the old image path
+                
+                // Check if the old image exists before trying to delete it
+                if (fs.existsSync(oldImagePath)) {
+                    fs.unlinkSync(oldImagePath); // Remove the old image from the 'uploads' folder
+                    console.log('Old image deleted successfully.');
+                } else {
+                    console.log('Old image not found:', oldImagePath);  // Log if the file doesn't exist
+                }
+            } else {
+                console.log("No old image provided, skipping deletion.");
+            }
         } catch (err) {
-            console.log(err);
+            console.log("Error deleting old image: ", err);
         }
     } else {
-        new_image = req.body.old_image;
+        new_image = req.body.old_image; // If no new image is uploaded, keep the old one
     }
+
+    // Prepare the update data
+    const updatedUser = {
+        name: req.body.name,
+        email: req.body.email,
+        phone: req.body.phone,
+        photo: new_image, // Use the new or old image filename
+    };
 
     try {
-        // Use async/await for findByIdAndUpdate
-        const result = await User.findByIdAndUpdate(id, {
-            name: req.body.name,
-            email: req.body.email,
-            phone: req.body.phone,
-            image: new_image,
-        }, { new: true }); // The `{ new: true }` option returns the updated document
+        // Update the user in the database
+        const user = await User.findByIdAndUpdate(id, updatedUser, { new: true });
 
-        // Send success message
         req.session.message = {
-            type: "Success",
-            message: "User updated successfully!"
+            type: 'success',
+            message: 'User updated successfully!'
         };
 
-        // Redirect to the user's edit page to see the updated data
-        res.redirect(`/edit/${id}`);
+        res.redirect("/");  // Redirect to the home page
 
     } catch (err) {
-        // If there is an error, handle it
-        res.json({ message: err.message, type: "danger" });
+        console.log(err); // Log the error
+        res.json({ message: err.message, type: 'danger' }); // Respond with error message
     }
 });
+
 
 
 module.exports = router;
