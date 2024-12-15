@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const User = require ("../models/users");
 const multer = require("multer");   // For uploading image 
-const fs = require ("fs");
+const fs = require ("fs")
+
+
 
 
 
@@ -91,6 +93,11 @@ router.get('/edit/:id', async (req, res) => { // Make the route handler async
 
 // Update User Route
 router.post("/update/:id", upload, async (req, res) => {
+   }
+);
+
+// Update User Route
+router.put("/update/:id", upload, async (req, res) => {
     let id = req.params.id;
     let new_image = "";
 
@@ -102,7 +109,7 @@ router.post("/update/:id", upload, async (req, res) => {
         const oldImageName = req.body.old_image;
         console.log("Old image passed: ", oldImageName); // Log the value of old_image
 
-        // Try to delete the old image if it exists
+        // Try to delete the old image if it e.ists
         try {
             if (oldImageName) {
                 const oldImagePath = "./uploads/" + oldImageName;
@@ -151,8 +158,38 @@ router.post("/update/:id", upload, async (req, res) => {
 });
 
 
+// DELETE USER ROUTE
+router.delete('/delete/:id', (req, res) => {
+    const id = req.params.id;
+
+    User.findByIdAndDelete(id, (err, result) => {
+        if (err) {
+            return res.json({ message: err.message });
+        }
+
+        if (result) {
+            if (result.photo != '') {  // Correctly check for the photo field
+                try {
+                    fs.unlinkSync('./uploads/' + result.photo);  // Delete the photo file
+                } catch (err) {
+                    console.log('Error deleting image: ', err);
+                }
+            }
+
+            req.session.message = {
+                type: 'INFO',
+                message: 'User deleted successfully!',
+            };
+            return res.redirect('/');
+        } else {
+            return res.json({ message: 'User not found!' });
+        }
+    });
+});
 
 module.exports = router;
+
+
 
 
 
